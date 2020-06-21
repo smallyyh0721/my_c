@@ -1,0 +1,7 @@
+dtrace -l | more
+List probe
+dtrace -l | grep 'syscall.*read'
+
+https://wiki.freebsd.org/DTrace/Tutorial
+
+dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
