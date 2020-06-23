@@ -5,3 +5,34 @@ dtrace -l | grep 'syscall.*read'
 https://wiki.freebsd.org/DTrace/Tutorial
 
 dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
+
+
+*******************************************
+
+#pragma D option quiet
+
+callout_execute:::callout-start
+{
+        self->cstart = timestamp;
+}
+
+callout_execute:::callout-end
+{
+
+        @callouts[((struct callout *)arg0)->c_func] = sum(timestamp -
+            self->cstart);
+}
+
+tick-1sec
+{
+        printa("%40a %10@d\n", @callouts);
+        clear(@callouts);
+        printf("\n");
+}
+
+BEGIN
+{
+        printf("%40s | %s\n", "function", "nanoseconds per second");
+}
+
+********************************************************************
