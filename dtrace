@@ -6,6 +6,7 @@ https://wiki.freebsd.org/DTrace/Tutorial
 
 dtrace -n 'syscall::open*:entry { printf("%s %s", execname, copyinstr(arg0)); }'
 
+https://wiki.freebsd.org/DTrace?highlight=%28%5CbCategoryDtrace%5Cb%29
 
 *******************************************
 
